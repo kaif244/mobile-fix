@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kaif's GeoExplorer Pro</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-wrapper">
+        <aside class="sidebar" id="sidebarDrawer">
+            <div class="drawer-handle"></div>
+
+            <div class="brand">
+                <i class="fa-solid fa-location-crosshairs"></i>
+                <span>Kaif's GeoExplorer Pro</span>
+                <button id="bookmarkPanelToggle" onclick="toggleBookmarkView()" title="View Bookmarks">
+                    <i class="fa-regular fa-star"></i>
+                </button>
+            </div>
+
+            <div class="search-section">
+                <div class="input-group">
+                    <input type="text" id="locationInput" placeholder="Search city or area..." onkeypress="handleSearch(event)">
+                    <button onclick="searchManualLocation()"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+
+                <button id="locateBtn" class="btn-secondary" onclick="requestLiveLocation()">
+                    <i class="fa-solid fa-location-arrow"></i> Use My Current Location
+                </button>
+
+                <div class="map-hint">
+                    <i class="fa-solid fa-circle-info"></i> 
+                    <span>Tip: Double-click or double-tap anywhere directly on the map to target a remote location for your relatives!</span>
+                </div>
+
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <label>Search Radius</label>
+                        <span id="radiusVal">3 km</span>
+                    </div>
+                    <input type="range" id="radiusInput" min="1" max="10" value="3" step="1" oninput="updateRadiusDisplay(this.value)">
+                </div>
+
+                <div class="filter-group">
+                    <div class="filter-header-row">
+                        <label id="panelCategoryLabel">Discovery Category</label>
+                    </div>
+                    <select id="categorySelect" onchange="findPlaces(this.value)">
+                        <option value="" disabled selected>What are you looking for?</option>
+                        <option value="restaurant">🍴 Restaurants</option>
+                        <option value="pharmacy">💊 Pharmacies</option>
+                        <option value="hospital">🏥 Hospitals</option>
+                        <option value="police">🏢 Police Stations</option>
+                        <option value="cafe">☕ Cafes</option>
+                        <option value="bank">🏦 Banks</option>
+                    </select>
+                </div>
+
+                <div id="inlineFilterControlGroup" class="results-filter-bar" style="display: none;">
+                    <div class="filter-search-box">
+                        <i class="fa-solid fa-filter"></i>
+                        <input type="text" id="resultsSearchInput" placeholder="Filter findings by name..." oninput="handleLiveResultsFiltering()">
+                    </div>
+                    <button id="sortOrderToggleBtn" onclick="toggleResultsSortingOrder()" title="Toggle Sorting Sequence">
+                        <i class="fa-solid fa-sort-amount-down-alt"></i> Nearest
+                    </button>
+                </div>
+            </div>
+
+            <div id="results-panel" class="results-container">
+                <div class="empty-state">
+                    <i class="fa-solid fa-map-location-dot"></i>
+                    <p>Double-tap a spot on the map, adjust your radius slider, and choose a category to scout locations.</p>
+                </div>
+            </div>
+        </aside>
+
+        <main id="map">
+            <div class="map-skin-switcher-wrapper" onclick="event.stopPropagation();">
+                <button class="skin-btn" id="skinMainBtn" onclick="toggleSkinMenu()">
+                    <i class="fa-solid fa-layer-group"></i>
+                </button>
+                <div class="skin-menu" id="skinMenuDropdown">
+                    <div class="skin-option active" onclick="changeMapSkin('light')">☀️ Light Mode</div>
+                    <div class="skin-option" onclick="changeMapSkin('dark')">🌙 Dark Mode</div>
+                    <div class="skin-option" onclick="changeMapSkin('satellite')">🌍 Satellite</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
